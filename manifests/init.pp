@@ -52,6 +52,7 @@ class nginx (
   $http_tcp_nopush                = $nginx::params::nx_http_tcp_nopush,
   $keepalive_timeout              = $nginx::params::nx_keepalive_timeout,
   $logdir                         = $nginx::params::nx_logdir,
+  $log_format                     = undef,
   $mail                           = $nginx::params::nx_mail,
   $manage_repo                    = $nginx::params::manage_repo,
   $multi_accept                   = $nginx::params::nx_multi_accept,
