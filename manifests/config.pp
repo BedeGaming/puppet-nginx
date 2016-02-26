@@ -30,6 +30,7 @@ class nginx::config(
   $fastcgi_cache_path             = $nginx::params::nx_fastcgi_cache_path,
   $fastcgi_cache_use_stale        = $nginx::params::nx_fastcgi_cache_use_stale,
   $gzip                           = $nginx::params::nx_gzip,
+  $nginx_cfg_prepend              = $nginx::params::nx_nginx_cfg_prepend,
   $http_access_log                = $nginx::params::nx_http_access_log,
   $http_cfg_append                = $nginx::params::nx_http_cfg_append,
   $http_tcp_nodelay               = $nginx::params::nx_http_tcp_nodelay,
