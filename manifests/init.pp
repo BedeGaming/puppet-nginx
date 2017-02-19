@@ -130,9 +130,14 @@ class nginx (
   validate_string($proxy_http_version)
   validate_bool($confd_purge)
   validate_bool($vhost_purge)
-  if ($proxy_cache_path != false) {
-    validate_string($proxy_cache_path)
+
+  if ( $proxy_cache_path != false) {
+    if ( is_string($proxy_cache_path) or is_hash($proxy_cache_path)) {}
+    else {
+      fail('proxy_cache_path must be a string or a hash')
+    }
   }
+
   if (!is_integer($proxy_cache_levels)) {
     fail('$proxy_cache_levels must be an integer.')
   }
