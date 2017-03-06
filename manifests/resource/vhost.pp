@@ -603,17 +603,20 @@ define nginx::resource::vhost (
       owner  => $nginx::config::daemon_user,
       mode   => '0444',
       source => $ssl_cert,
+      links  => 'follow',
     })
     ensure_resource('file', "${nginx::config::conf_dir}/${cert}.key", {
       owner  => $nginx::config::daemon_user,
       mode   => '0440',
       source => $ssl_key,
+      links  => 'follow',
     })
     if ($ssl_dhparam != undef) {
       ensure_resource('file', "${nginx::config::conf_dir}/${cert}.dh.pem", {
         owner  => $nginx::config::daemon_user,
         mode   => '0440',
         source => $ssl_dhparam,
+        links  => 'follow',
       })
     }
     if ($ssl_stapling_file != undef) {
@@ -621,6 +624,7 @@ define nginx::resource::vhost (
         owner  => $nginx::config::daemon_user,
         mode   => '0440',
         source => $ssl_stapling_file,
+        links  => 'follow',
       })
     }
     if ($ssl_trusted_cert != undef) {
@@ -628,6 +632,7 @@ define nginx::resource::vhost (
         owner  => $nginx::config::daemon_user,
         mode   => '0440',
         source => $ssl_trusted_cert,
+        links  => 'follow',
       })
     }
   }
