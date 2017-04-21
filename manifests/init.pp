@@ -64,6 +64,7 @@ class nginx (
   $sendfile                       = undef,
   $server_tokens                  = undef,
   $spdy                           = undef,
+  $http2                          = undef,
   $types_hash_bucket_size         = undef,
   $types_hash_max_size            = undef,
   $worker_connections             = undef,
@@ -189,6 +190,7 @@ class nginx (
         $sendfile or
         $server_tokens or
         $spdy or
+        $http2 or
         $super_user or
         $temp_dir or
         $types_hash_bucket_size or
@@ -270,6 +272,7 @@ class nginx (
       sendfile                       => $sendfile,
       server_tokens                  => $server_tokens,
       spdy                           => $spdy,
+      http2                          => $http2,
       super_user                     => $super_user,
       temp_dir                       => $temp_dir,
       types_hash_bucket_size         => $types_hash_bucket_size,
