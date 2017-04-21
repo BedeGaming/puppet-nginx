@@ -64,6 +64,7 @@ class nginx::config(
   $sendfile                       = $nginx::params::nx_sendfile,
   $server_tokens                  = $nginx::params::nx_server_tokens,
   $spdy                           = $nginx::params::nx_spdy,
+  $http2                          = $nginx::params::nx_http2,
   $super_user                     = $nginx::params::nx_super_user,
   $temp_dir                       = $nginx::params::nx_temp_dir,
   $types_hash_bucket_size         = $nginx::params::nx_types_hash_bucket_size,

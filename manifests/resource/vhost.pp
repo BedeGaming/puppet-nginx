@@ -69,7 +69,7 @@
 #     certificates in the PEM format used to verify client certificates and
 #     OCSP responses if ssl_stapling is enabled.
 #   [*spdy*]                - Toggles SPDY protocol.
-
+#   [*http2*]               - Toggles HTTP2 protocol.
 #   [*server_name*]         - List of vhostnames for which this vhost will
 #     respond. Default [$name].
 #   [*www_root*]            - Specifies the location on disk for files to be
@@ -173,7 +173,7 @@ define nginx::resource::vhost (
   $ssl_stapling_verify    = false,
   $ssl_trusted_cert       = undef,
   $spdy                   = $nginx::config::spdy,
-  $http2                  = 'off',
+  $http2                  = $nginx::config::http2,
   $proxy                  = undef,
   $proxy_redirect         = undef,
   $proxy_read_timeout     = $nginx::config::proxy_read_timeout,

@@ -40,6 +40,7 @@ class nginx::params {
   $nx_gzip                           = on
   $nx_server_tokens                  = on
   $nx_spdy                           = off
+  $nx_http2                          = off
   $nx_ssl_stapling                   = off
 
   $nx_proxy_redirect                 = off
