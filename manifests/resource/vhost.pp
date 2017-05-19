@@ -1,4 +1,4 @@
-# define: nginx::resource::vhost
+# define: nginx-legacy::resource::vhost
 #
 # This definition creates a virtual host
 #
@@ -37,7 +37,7 @@
 #                             autoindex directory listing. Undef by default.
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
-#     nginx::resource::upstream
+#     nginx-legacy::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
 #   [*proxy_redirect*]      - Override the default proxy_redirect value of off.
@@ -162,14 +162,14 @@
 # Requires:
 #
 # Sample Usage:
-#  nginx::resource::vhost { 'test2.local':
+#  nginx-legacy::resource::vhost { 'test2.local':
 #    ensure   => present,
 #    www_root => '/var/www/nginx-default',
 #    ssl      => true,
 #    ssl_cert => '/tmp/server.crt',
 #    ssl_key  => '/tmp/server.pem',
 #  }
-define nginx::resource::vhost (
+define nginx-legacy::resource::vhost (
   $ensure                       = 'present',
   $listen_ip                    = '*',
   $listen_port                  = '80',
@@ -202,13 +202,13 @@ define nginx::resource::vhost (
   $ssl_stapling_verify          = false,
   $ssl_session_timeout          = '5m',
   $ssl_trusted_cert             = undef,
-  $spdy                         = $::nginx::config::spdy,
-  $http2                        = $::nginx::config::http2,
+  $spdy                         = $::nginx-legacy::config::spdy,
+  $http2                        = $::nginx-legacy::config::http2,
   $proxy                        = undef,
   $proxy_redirect               = undef,
-  $proxy_read_timeout           = $::nginx::config::proxy_read_timeout,
-  $proxy_connect_timeout        = $::nginx::config::proxy_connect_timeout,
-  $proxy_set_header             = $::nginx::config::proxy_set_header,
+  $proxy_read_timeout           = $::nginx-legacy::config::proxy_read_timeout,
+  $proxy_connect_timeout        = $::nginx-legacy::config::proxy_connect_timeout,
+  $proxy_set_header             = $::nginx-legacy::config::proxy_set_header,
   $proxy_cache                  = false,
   $proxy_cache_key              = undef,
   $proxy_cache_use_stale        = undef,
@@ -217,10 +217,10 @@ define nginx::resource::vhost (
   $proxy_set_body               = undef,
   $resolver                     = [],
   $fastcgi                      = undef,
-  $fastcgi_params               = "${::nginx::config::conf_dir}/fastcgi_params",
+  $fastcgi_params               = "${::nginx-legacy::config::conf_dir}/fastcgi_params",
   $fastcgi_script               = undef,
   $uwsgi                        = undef,
-  $uwsgi_params                 = "${nginx::config::conf_dir}/uwsgi_params",
+  $uwsgi_params                 = "${nginx-legacy::config::conf_dir}/uwsgi_params",
   $index_files                  = [
     'index.html',
     'index.htm',
@@ -263,9 +263,9 @@ define nginx::resource::vhost (
   $string_mappings              = {},
   $geo_mappings                 = {},
   $gzip_types                   = undef,
-  $owner                        = $::nginx::config::global_owner,
-  $group                        = $::nginx::config::global_group,
-  $mode                         = $::nginx::config::global_mode,
+  $owner                        = $::nginx-legacy::config::global_owner,
+  $group                        = $::nginx-legacy::config::global_group,
+  $mode                         = $::nginx-legacy::config::global_mode,
   $maintenance                  = false,
   $maintenance_value            = 'return 503'
 ) {
@@ -489,8 +489,8 @@ define nginx::resource::vhost (
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
-  $vhost_dir = "${::nginx::config::conf_dir}/sites-available"
-  $vhost_enable_dir = "${::nginx::config::conf_dir}/sites-enabled"
+  $vhost_dir = "${::nginx-legacy::config::conf_dir}/sites-available"
+  $vhost_enable_dir = "${::nginx-legacy::config::conf_dir}/sites-enabled"
   $vhost_symlink_ensure = $ensure ? {
     'absent' => absent,
     default  => 'link',
@@ -504,7 +504,7 @@ define nginx::resource::vhost (
       'absent' => absent,
       default  => 'file',
     },
-    notify => Class['::nginx::service'],
+    notify => Class['::nginx-legacy::service'],
     owner  => $owner,
     group  => $group,
     mode   => $mode,
@@ -528,12 +528,12 @@ define nginx::resource::vhost (
   # unfortunately means resorting to the $varname_real thing
   $access_log_real = $access_log ? {
     'off'   => 'off',
-    undef   => "${::nginx::config::log_dir}/${name_sanitized}.access.log ${format_log}",
+    undef   => "${::nginx-legacy::config::log_dir}/${name_sanitized}.access.log ${format_log}",
     default => "${access_log} ${format_log}",
   }
 
   $error_log_real = $error_log ? {
-    undef   => "${::nginx::config::log_dir}/${name_sanitized}.error.log",
+    undef   => "${::nginx-legacy::config::log_dir}/${name_sanitized}.error.log",
     default => $error_log,
   }
 
@@ -541,14 +541,14 @@ define nginx::resource::vhost (
     owner  => $owner,
     group  => $group,
     mode   => $mode,
-    notify => Class['::nginx::service'],
+    notify => Class['::nginx-legacy::service'],
   }
 
   $ssl_only = ($ssl == true) and ($ssl_port == $listen_port)
 
   if $use_default_location == true {
     # Create the default location reference for the vHost
-    nginx::resource::location {"${name_sanitized}-default":
+    nginx-legacy::resource::location {"${name_sanitized}-default":
       ensure                      => $ensure,
       vhost                       => $name_sanitized,
       ssl                         => $ssl,
@@ -584,7 +584,7 @@ define nginx::resource::vhost (
       rewrite_rules               => $rewrite_rules,
       raw_prepend                 => $location_raw_prepend,
       raw_append                  => $location_raw_append,
-      notify                      => Class['nginx::service'],
+      notify                      => Class['nginx-legacy::service'],
     }
     $root = undef
   } else {
@@ -633,12 +633,12 @@ define nginx::resource::vhost (
     # unfortunately means resorting to the $varname_real thing
     $ssl_access_log_real = $access_log ? {
       'off'   => 'off',
-      undef   => "${::nginx::config::log_dir}/ssl-${name_sanitized}.access.log ${format_log}",
+      undef   => "${::nginx-legacy::config::log_dir}/ssl-${name_sanitized}.access.log ${format_log}",
       default => "${access_log} ${format_log}",
     }
 
     $ssl_error_log_real = $error_log ? {
-      undef   => "${::nginx::config::log_dir}/ssl-${name_sanitized}.error.log",
+      undef   => "${::nginx-legacy::config::log_dir}/ssl-${name_sanitized}.error.log",
       default => $error_log,
     }
 
@@ -659,9 +659,9 @@ define nginx::resource::vhost (
     path    => "${vhost_enable_dir}/${name_sanitized}.conf",
     target  => $config_file,
     require => Concat[$config_file],
-    notify  => Class['::nginx::service'],
+    notify  => Class['::nginx-legacy::service'],
   }
 
-  create_resources('::nginx::resource::map', $string_mappings)
-  create_resources('::nginx::resource::geo', $geo_mappings)
+  create_resources('::nginx-legacy::resource::map', $string_mappings)
+  create_resources('::nginx-legacy::resource::geo', $geo_mappings)
 }

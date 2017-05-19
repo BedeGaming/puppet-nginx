@@ -36,7 +36,7 @@ class { 'nginx': }
 ### Creating a new virtual host
 
 ```puppet
-nginx::resource::vhost { 'www.puppetlabs.com':
+nginx-legacy::resource::vhost { 'www.puppetlabs.com':
   www_root => '/var/www/www.puppetlabs.com',
 }
 ```
@@ -44,7 +44,7 @@ nginx::resource::vhost { 'www.puppetlabs.com':
 ### Add a Proxy Server
 
 ```puppet
-nginx::resource::upstream { 'puppet_rack_app':
+nginx-legacy::resource::upstream { 'puppet_rack_app':
   members => [
     'localhost:3000',
     'localhost:3001',
@@ -52,7 +52,7 @@ nginx::resource::upstream { 'puppet_rack_app':
   ],
 }
 
-nginx::resource::vhost { 'rack.puppetlabs.com':
+nginx-legacy::resource::vhost { 'rack.puppetlabs.com':
   proxy => 'http://puppet_rack_app',
 }
 ```
@@ -67,7 +67,7 @@ class { 'nginx':
   mail => true,
 }
 
-nginx::resource::mailhost { 'domain1.example':
+nginx-legacy::resource::mailhost { 'domain1.example':
   auth_http   => 'server2.example/cgi-bin/auth',
   protocol    => 'smtp',
   listen_port => 587,
@@ -108,19 +108,19 @@ If you have set `ssl => true` and also set `listen_port` and `ssl_port` to the s
 Defining nginx resources in Hiera.
 
 ```yaml
-nginx::nginx_upstreams:
+nginx-legacy::nginx_upstreams:
   'puppet_rack_app':
     ensure: present
     members:
       - localhost:3000
       - localhost:3001
       - localhost:3002
-nginx::nginx_vhosts:
+nginx-legacy::nginx_vhosts:
   'www.puppetlabs.com':
     www_root: '/var/www/www.puppetlabs.com'
   'rack.puppetlabs.com':
     proxy: 'http://puppet_rack_app'
-nginx::nginx_locations:
+nginx-legacy::nginx_locations:
   'static':
     location: '~ "^/static/[0-9a-fA-F]{8}\/(.*)$"'
     vhost: www.puppetlabs.com
@@ -129,7 +129,7 @@ nginx::nginx_locations:
     location: /userContent
     vhost: www.puppetlabs.com
     www_root: /var/www/html
-nginx::nginx_mailhosts:
+nginx-legacy::nginx_mailhosts:
   'smtp':
     auth_http: server2.example/cgi-bin/auth
     protocol: smtp
@@ -170,7 +170,7 @@ Package source `passenger` will add [Phusion Passenger repository](https://oss-b
 For each virtual host you should specify which ruby should be used.
 
 ```puppet
-nginx::resource::vhost { 'www.puppetlabs.com':
+nginx-legacy::resource::vhost { 'www.puppetlabs.com':
   www_root         => '/var/www/www.puppetlabs.com',
   vhost_cfg_append => {
     'passenger_enabled' => 'on',
@@ -184,7 +184,7 @@ nginx::resource::vhost { 'www.puppetlabs.com':
 Virtual host config for serving puppet master:
 
 ```puppet
-nginx::resource::vhost { 'puppet':
+nginx-legacy::resource::vhost { 'puppet':
   ensure               => present,
   server_name          => ['puppet'],
   listen_port          => 8140,
@@ -211,7 +211,7 @@ nginx::resource::vhost { 'puppet':
 }
 ```
 
-### Example puppet class calling nginx::vhost with HTTPS FastCGI and redirection of HTTP
+### Example puppet class calling nginx-legacy::vhost with HTTPS FastCGI and redirection of HTTP
 
 ```puppet
 
@@ -224,7 +224,7 @@ define web::nginx_ssl_with_redirect (
   $www_root             = "${full_web_path}/${name}/",
   $location_cfg_append  = undef,
 ) {
-  nginx::resource::vhost { "${name}.${::domain}":
+  nginx-legacy::resource::vhost { "${name}.${::domain}":
     ensure              => present,
     www_root            => "${full_web_path}/${name}/",
     location_cfg_append => { 'rewrite' => '^ https://$server_name$request_uri? permanent' },
@@ -236,7 +236,7 @@ define web::nginx_ssl_with_redirect (
     $tmp_www_root = $www_root
   }
 
-  nginx::resource::vhost { "${name}.${::domain} ${name}":
+  nginx-legacy::resource::vhost { "${name}.${::domain} ${name}":
     ensure                => present,
     listen_port           => 443,
     www_root              => $tmp_www_root,
@@ -250,7 +250,7 @@ define web::nginx_ssl_with_redirect (
 
 
   if $php {
-    nginx::resource::location { "${name}_root":
+    nginx-legacy::resource::location { "${name}_root":
       ensure          => present,
       ssl             => true,
       ssl_only        => true,
@@ -274,7 +274,7 @@ define web::nginx_ssl_with_redirect (
 ## Add custom fastcgi_params
 
 ```puppet
-nginx::resource::location { "some_root":
+nginx-legacy::resource::location { "some_root":
   ensure         => present,
   location       => '/some/url',
   fastcgi        => "127.0.0.1:9000",

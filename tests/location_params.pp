@@ -1,6 +1,6 @@
 include nginx
 
-nginx::resource::location { 'www.test.com-params':
+nginx-legacy::resource::location { 'www.test.com-params':
     ensure        => present,
     location      => '/some/url',
     vhost         => 'www.test.com',

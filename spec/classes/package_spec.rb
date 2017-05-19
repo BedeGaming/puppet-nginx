@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::package' do
+describe 'nginx-legacy::package' do
 
   shared_examples 'redhat' do |operatingsystem|
     let(:facts) {{ :operatingsystem => operatingsystem, :osfamily => 'RedHat', :operatingsystemmajrelease => '6' }}
@@ -14,8 +14,8 @@ describe 'nginx::package' do
         'priority' => '1',
         'gpgkey'   => 'http://nginx.org/keys/nginx_signing.key'
       )}
-      it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::redhat]') }
-      it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::redhat]') }
+      it { is_expected.to contain_anchor('nginx-legacy::package::begin').that_comes_before('Class[nginx::package::redhat]') }
+      it { is_expected.to contain_anchor('nginx-legacy::package::end').that_requires('Class[nginx::package::redhat]') }
     end
 
     context "package_source => nginx-mainline" do
@@ -69,8 +69,8 @@ describe 'nginx::package' do
         'repos'      => 'nginx',
         'key'        => '573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62',
       )}
-      it { is_expected.to contain_anchor('nginx::package::begin').that_comes_before('Class[nginx::package::debian]') }
-      it { is_expected.to contain_anchor('nginx::package::end').that_requires('Class[nginx::package::debian]') }
+      it { is_expected.to contain_anchor('nginx-legacy::package::begin').that_comes_before('Class[nginx::package::debian]') }
+      it { is_expected.to contain_anchor('nginx-legacy::package::end').that_requires('Class[nginx::package::debian]') }
     end
 
     context "package_source => nginx-mainline" do

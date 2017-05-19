@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::upstream' do
+describe 'nginx-legacy::resource::upstream' do
   let :title do
     'upstream-test'
   end
@@ -13,13 +13,13 @@ describe 'nginx::resource::upstream' do
 
   let :pre_condition do
       [
-      'include ::nginx::config',
+      'include ::nginx-legacy::config',
       ]
   end
 
   let :pre_condition do
     [
-      'include ::nginx::config',
+      'include ::nginx-legacy::config',
     ]
   end
 

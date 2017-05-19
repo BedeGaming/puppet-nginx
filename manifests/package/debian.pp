@@ -1,4 +1,4 @@
-# Class: nginx::package::debian
+# Class: nginx-legacy::package::debian
 #
 # This module manages NGINX package installation on debian based systems
 #
@@ -13,7 +13,7 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::debian(
+class nginx-legacy::package::debian(
     $manage_repo    = true,
     $package_name   = 'nginx',
     $package_source = 'nginx',

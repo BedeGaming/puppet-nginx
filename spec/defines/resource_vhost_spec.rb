@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx::resource::vhost' do
+describe 'nginx-legacy::resource::vhost' do
   let :title do
     'www.rspec.example.com'
   end
@@ -18,7 +18,7 @@ describe 'nginx::resource::vhost' do
   end
   let :pre_condition do
     [
-      'include ::nginx::config',
+      'include ::nginx-legacy::config',
     ]
   end
 
@@ -26,7 +26,7 @@ describe 'nginx::resource::vhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { is_expected.to contain_class("nginx::config") }
+      it { is_expected.to contain_class("nginx-legacy::config") }
       it { is_expected.to contain_concat("/etc/nginx/sites-available/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',
@@ -771,13 +771,13 @@ describe 'nginx::resource::vhost' do
       context "SSL cert missing" do
         let(:params) {{ :ssl => true, :ssl_key => 'key' }}
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error) }
       end
 
       context "SSL key missing" do
         let(:params) {{ :ssl => true, :ssl_cert => 'cert' }}
 
-        it { expect { is_expected.to contain_class('nginx::resource::vhost') }.to raise_error(Puppet::Error) }
+        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error) }
       end
 
       context 'when use_default_location => true' do

@@ -1,4 +1,4 @@
-# define: nginx::resource::geo
+# define: nginx-legacy::resource::geo
 #
 # This definition creates a new geo mapping entry for NGINX
 #
@@ -23,7 +23,7 @@
 #
 # Sample Usage:
 #
-#  nginx::resource::geo { 'client_network':
+#  nginx-legacy::resource::geo { 'client_network':
 #    ensure          => present,
 #    ranges          => false,
 #    default         => extra,
@@ -38,7 +38,7 @@
 #
 # Sample Hiera usage:
 #
-#  nginx::geo_mappings:
+#  nginx-legacy::geo_mappings:
 #    client_network:
 #      ensure: present
 #      ranges: false
@@ -52,7 +52,7 @@
 #        '192.168.0.0/16': 'intra'
 
 
-define nginx::resource::geo (
+define nginx-legacy::resource::geo (
   $networks,
   $default         = undef,
   $ensure          = 'present',
@@ -73,7 +73,7 @@ define nginx::resource::geo (
   if ($proxies != undef) { validate_array($proxies) }
   if ($proxy_recursive != undef) { validate_bool($proxy_recursive) }
 
-  $root_group = $::nginx::config::root_group
+  $root_group = $::nginx-legacy::config::root_group
 
   $ensure_real = $ensure ? {
     'absent' => 'absent',
@@ -86,9 +86,9 @@ define nginx::resource::geo (
     mode  => '0644',
   }
 
-  file { "${::nginx::config::conf_dir}/conf.d/${name}-geo.conf":
+  file { "${::nginx-legacy::config::conf_dir}/conf.d/${name}-geo.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/geo.erb'),
-    notify  => Class['::nginx::service'],
+    notify  => Class['::nginx-legacy::service'],
   }
 }

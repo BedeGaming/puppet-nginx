@@ -1,4 +1,4 @@
-# Define: nginx::resources::upstream::member
+# Define: nginx-legacy::resources::upstream::member
 #
 # Creates an upstream member inside the upstream block. Export this resource
 # in all upstream member servers and collect them on the NGINX server.
@@ -20,7 +20,7 @@
 #
 #   Exporting the resource on a upstream member server:
 #
-#   @@nginx::resource::upstream::member { $::fqdn:
+#   @@nginx-legacy::resource::upstream::member { $::fqdn:
 #     ensure    => present,
 #     upstream  => 'proxypass',
 #     server    => $::ipaddress,
@@ -30,11 +30,11 @@
 #
 #   Collecting the resource on the NGINX server:
 #
-#   nginx::resource::upstream { 'proxypass':
+#   nginx-legacy::resource::upstream { 'proxypass':
 #     ensure    => present,
 #   }
 #
-define nginx::resource::upstream::member (
+define nginx-legacy::resource::upstream::member (
   $upstream,
   $server,
   $ensure                 = 'present',
@@ -53,7 +53,7 @@ define nginx::resource::upstream::member (
   # Uses: $server, $port, $upstream_fail_timeout
   concat::fragment { "${upstream}_upstream_member_${name}":
     ensure  => $ensure_real,
-    target  => "${::nginx::config::conf_dir}/conf.d/${upstream}-upstream.conf",
+    target  => "${::nginx-legacy::config::conf_dir}/conf.d/${upstream}-upstream.conf",
     order   => 40,
     content => template('nginx/conf.d/upstream_member.erb'),
   }

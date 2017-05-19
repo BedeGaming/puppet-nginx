@@ -1,4 +1,4 @@
-# Class: nginx::package::redhat
+# Class: nginx-legacy::package::redhat
 #
 # This module manages NGINX package installation on RedHat based systems
 #
@@ -13,7 +13,7 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::package::redhat (
+class nginx-legacy::package::redhat (
   $manage_repo    = true,
   $package_ensure = 'present',
   $package_name   = 'nginx',

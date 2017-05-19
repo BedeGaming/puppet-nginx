@@ -1,13 +1,13 @@
 require 'spec_helper'
 require 'digest/md5'
 
-describe 'nginx::resource::location' do
+describe 'nginx-legacy::resource::location' do
   let :title do
     'rspec-test'
   end
   let :pre_condition do
     [
-      'include ::nginx::config',
+      'include ::nginx-legacy::config',
     ]
   end
 
@@ -19,7 +19,7 @@ describe 'nginx::resource::location' do
         :vhost    => 'vhost1',
       } end
 
-      it { is_expected.to contain_class("nginx::config") }
+      it { is_expected.to contain_class("nginx-legacy::config") }
       it { is_expected.to contain_concat__fragment("f25e14942fb58942ee13b1465a4e1719").with_content(/location rspec-test/) }
       it { is_expected.not_to contain_file('/etc/nginx/fastcgi_params') }
       it { is_expected.not_to contain_concat__fragment("vhost1-800-rspec-test-ssl") }
@@ -748,7 +748,7 @@ describe 'nginx::resource::location' do
           :www_root => '/',
         } end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without attaching to a virtual host/) }
+        it { expect { is_expected.to contain_class('nginx-legacy::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without attaching to a virtual host/) }
       end
 
       context "location type missing" do
@@ -756,7 +756,7 @@ describe 'nginx::resource::location' do
           :vhost => 'vhost1',
         } end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined/) }
+        it { expect { is_expected.to contain_class('nginx-legacy::resource::location') }.to raise_error(Puppet::Error, /Cannot create a location reference without a www_root, proxy, location_alias, fastcgi, uwsgi, stub_status, internal, or location_custom_cfg defined/) }
       end
 
       context "www_root and proxy are set" do
@@ -766,7 +766,7 @@ describe 'nginx::resource::location' do
           :proxy    => 'http://localhost:8000/uri/',
         } end
 
-        it { expect { is_expected.to contain_class('nginx::resource::location') }.to raise_error(Puppet::Error, /Cannot define both directory and proxy in a virtual host/) }
+        it { expect { is_expected.to contain_class('nginx-legacy::resource::location') }.to raise_error(Puppet::Error, /Cannot define both directory and proxy in a virtual host/) }
       end
 
       context 'when vhost name is sanitized' do

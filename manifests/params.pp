@@ -1,4 +1,4 @@
-class nginx::params {
+class nginx-legacy::params {
   ### Operating System Configuration
   ## This is my hacky... no hiera system. Oh well. :)
   $_module_defaults = {

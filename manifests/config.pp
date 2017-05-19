@@ -1,4 +1,4 @@
-# Class: nginx::config
+# Class: nginx-legacy::config
 #
 # This module manages NGINX bootstrap and configuration
 #
@@ -13,28 +13,28 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx::config(
+class nginx-legacy::config(
   ### START Module/App Configuration ###
-  $client_body_temp_path          = $::nginx::params::client_body_temp_path,
+  $client_body_temp_path          = $::nginx-legacy::params::client_body_temp_path,
   $confd_purge                    = false,
-  $conf_dir                       = $::nginx::params::conf_dir,
-  $daemon_user                    = $::nginx::params::daemon_user,
-  $global_owner                   = $::nginx::params::global_owner,
-  $global_group                   = $::nginx::params::global_group,
-  $global_mode                    = $::nginx::params::global_mode,
-  $log_dir                        = $::nginx::params::log_dir,
-  $http_access_log                = $::nginx::params::http_access_log,
-  $nginx_error_log                = $::nginx::params::nginx_error_log,
+  $conf_dir                       = $::nginx-legacy::params::conf_dir,
+  $daemon_user                    = $::nginx-legacy::params::daemon_user,
+  $global_owner                   = $::nginx-legacy::params::global_owner,
+  $global_group                   = $::nginx-legacy::params::global_group,
+  $global_mode                    = $::nginx-legacy::params::global_mode,
+  $log_dir                        = $::nginx-legacy::params::log_dir,
+  $http_access_log                = $::nginx-legacy::params::http_access_log,
+  $nginx_error_log                = $::nginx-legacy::params::nginx_error_log,
   $nginx_error_log_severity       = 'error',
-  $pid                            = $::nginx::params::pid,
-  $proxy_temp_path                = $::nginx::params::proxy_temp_path,
-  $root_group                     = $::nginx::params::root_group,
-  $run_dir                        = $::nginx::params::run_dir,
-  $sites_available_owner          = $::nginx::params::sites_available_owner,
-  $sites_available_group          = $::nginx::params::sites_available_group,
-  $sites_available_mode           = $::nginx::params::sites_available_mode,
-  $super_user                     = $::nginx::params::super_user,
-  $temp_dir                       = $::nginx::params::temp_dir,
+  $pid                            = $::nginx-legacy::params::pid,
+  $proxy_temp_path                = $::nginx-legacy::params::proxy_temp_path,
+  $root_group                     = $::nginx-legacy::params::root_group,
+  $run_dir                        = $::nginx-legacy::params::run_dir,
+  $sites_available_owner          = $::nginx-legacy::params::sites_available_owner,
+  $sites_available_group          = $::nginx-legacy::params::sites_available_group,
+  $sites_available_mode           = $::nginx-legacy::params::sites_available_mode,
+  $super_user                     = $::nginx-legacy::params::super_user,
+  $temp_dir                       = $::nginx-legacy::params::temp_dir,
   $vhost_purge                    = false,
 
   # Primary Templates
@@ -102,7 +102,7 @@ class nginx::config(
   $worker_processes               = '1',
   $worker_rlimit_nofile           = '1024',
   ### END Nginx Configuration ###
-) inherits ::nginx::params {
+) inherits ::nginx-legacy::params {
 
   ### Validations ###
   if ($worker_processes != 'auto') and (!is_integer($worker_processes)) {
@@ -208,7 +208,7 @@ class nginx::config(
     File["${conf_dir}/conf.d"] {
       purge   => true,
       recurse => true,
-      notify  => Class['::nginx::service'],
+      notify  => Class['::nginx-legacy::service'],
     }
   }
 

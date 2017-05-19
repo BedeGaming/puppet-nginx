@@ -22,7 +22,7 @@ The choices here are `nginx-stable` (the current 'production' level release) and
 Calling the `nginx` class from your manifest simply installs the NGINX software and puts some basic configuration in place.  In this state, NGINX will not serve web pages or proxy to other services - for that, we need to define a *server*.  In NGINX terminology, a *server* is how we define our services (such as websites) with a name.  (If you are used to configuring Apache, a server is identical to an Apache *virtual host*.)  A simple virtual host that serves static web pages can be defined with a server name and a *web root*, or the directory where our HTML pages are located.
 
 ```
-  nginx::resource::vhost{'www.myhost.com':
+  nginx-legacy::resource::vhost{'www.myhost.com':
     www_root => '/opt/html/',
   }
 ```
@@ -33,7 +33,7 @@ In this example, the DNS address `www.myhost.com` will serve pages from the `/op
 Setting up a simple static webserver is straightforward, but is usually not the reason we implement NGINX to serve our web applications.  NGINX is a powerful *proxy* server that can manage large numbers of connections to one or more services that can serve dynamic web applications or even provide a simple technque for load balancing requests between multiple webservers.  For this example, let's define a proxy that serves a resource from a directory on our website. (A common use of this redirect may be to define a 'blog' link or a third party web application from your main site.)  We can define this proxy as follows:
 
 ```
-  nginx::resource::location{'/blog':
+  nginx-legacy::resource::location{'/blog':
     proxy => 'http://192.168.99.1/' ,
     vhost => 'www.myhost.com'
    }
@@ -42,10 +42,10 @@ This will proxy any requests made to `http://www.myhost.com/blog` to the URL `ht
 
 ### Defining Backend Resources
 
-We can expand on these simple proxies by defining *upstream* resources for our web applications.  Defining upstream resources allow us to define more complex scenarios such as configuration parameters, load balancing, or even the ability to share resources between virtual hosts. An upstream resource is defined with the `nginx::resource::upstream` class.  We can define a simple upstream resource by naming the resource and a single *member*.  To define an upstream resource for our previous proxy example, declare a class of type `nginx::resource::upstream` named `upstream_app`:
+We can expand on these simple proxies by defining *upstream* resources for our web applications.  Defining upstream resources allow us to define more complex scenarios such as configuration parameters, load balancing, or even the ability to share resources between virtual hosts. An upstream resource is defined with the `nginx-legacy::resource::upstream` class.  We can define a simple upstream resource by naming the resource and a single *member*.  To define an upstream resource for our previous proxy example, declare a class of type `nginx::resource::upstream` named `upstream_app`:
 
 ```
-  nginx::resource::upstream { 'upstream_app':
+  nginx-legacy::resource::upstream { 'upstream_app':
     members => [
       '192.168.99.1:80',
     ],
@@ -54,7 +54,7 @@ We can expand on these simple proxies by defining *upstream* resources for our w
   This will define an upstream resource with our server IP of `192.168.99.1`.  To use the upstream in our previous proxy, modify the location block as follows:
   
   ```
-    nginx::resource::location{'/blog':
+    nginx-legacy::resource::location{'/blog':
     proxy => 'http://upstream_app/' ,
     vhost => 'www.myhost.com'
    }
@@ -72,17 +72,17 @@ Combining our configurations above into a single manifest, our code block looks 
 
 }
 
-  nginx::resource::upstream { 'upstream_app':
+  nginx-legacy::resource::upstream { 'upstream_app':
     members => [
       '192.168.99.1:80',
     ],
   }
 
-  nginx::resource::vhost{'www.myhost.com':
+  nginx-legacy::resource::vhost{'www.myhost.com':
     www_root => '/opt/html/',
   }
 
-  nginx::resource::location{'/proxy':
+  nginx-legacy::resource::location{'/proxy':
     proxy => 'http://upstream_app/' ,
     vhost => 'www.myhost.com',
 
