@@ -1,4 +1,4 @@
-# define: nginx-legacy::resource::mailhost
+# define: nginx_legacy::resource::mailhost
 #
 # This definition creates a virtual host
 #
@@ -29,7 +29,7 @@
 # Requires:
 #
 # Sample Usage:
-#  nginx-legacy::resource::mailhost { 'domain1.example':
+#  nginx_legacy::resource::mailhost { 'domain1.example':
 #    ensure      => present,
 #    auth_http   => 'server2.example/cgi-bin/auth',
 #    protocol    => 'smtp',
@@ -41,7 +41,7 @@
 #    ssl_cert    => '/tmp/server.crt',
 #    ssl_key     => '/tmp/server.pem',
 #  }
-define nginx-legacy::resource::mailhost (
+define nginx_legacy::resource::mailhost (
   $listen_port,
   $ensure              = 'present',
   $listen_ip           = '*',
@@ -61,7 +61,7 @@ define nginx-legacy::resource::mailhost (
   $server_name         = [$name]
 ) {
 
-  $root_group = $::nginx-legacy::config::root_group
+  $root_group = $::nginx_legacy::config::root_group
 
   File {
     owner => 'root',
@@ -109,7 +109,7 @@ define nginx-legacy::resource::mailhost (
   validate_string($xclient)
   validate_array($server_name)
 
-  $config_file = "${::nginx-legacy::config::conf_dir}/conf.mail.d/${name}.conf"
+  $config_file = "${::nginx_legacy::config::conf_dir}/conf.mail.d/${name}.conf"
 
   # Add IPv6 Logic Check - Nginx service will not start if ipv6 is enabled
   # and support does not exist for it in the kernel.
@@ -128,7 +128,7 @@ define nginx-legacy::resource::mailhost (
     owner  => 'root',
     group  => $root_group,
     mode   => '0644',
-    notify => Class['::nginx-legacy::service'],
+    notify => Class['::nginx_legacy::service'],
   }
 
   if ($listen_port != $ssl_port) {

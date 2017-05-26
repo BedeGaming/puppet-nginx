@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx-legacy::resource::streamhost' do
+describe 'nginx_legacy::resource::streamhost' do
   let :title do
     'www.rspec.example.com'
   end
@@ -16,7 +16,7 @@ describe 'nginx-legacy::resource::streamhost' do
   end
   let :pre_condition do
     [
-      'include ::nginx-legacy::config',
+      'include ::nginx_legacy::config',
     ]
   end
 
@@ -24,7 +24,7 @@ describe 'nginx-legacy::resource::streamhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { is_expected.to contain_class("nginx-legacy::config") }
+      it { is_expected.to contain_class("nginx_legacy::config") }
       it { is_expected.to contain_concat("/etc/nginx/streams-available/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',

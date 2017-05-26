@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx-legacy::resource::geo' do
+describe 'nginx_legacy::resource::geo' do
   let :title do
     'client_network'
   end
@@ -19,7 +19,7 @@ describe 'nginx-legacy::resource::geo' do
 
   let :pre_condition do
     [
-      'include ::nginx-legacy::config',
+      'include ::nginx_legacy::config',
     ]
   end
 

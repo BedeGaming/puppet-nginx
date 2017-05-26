@@ -1,4 +1,4 @@
-# define: nginx-legacy::resource::streamhost
+# define: nginx_legacy::resource::streamhost
 #
 # This definition creates a virtual host
 #
@@ -31,7 +31,7 @@
 #                             autoindex directory listing. Undef by default.
 #   [*proxy*]               - Proxy server(s) for the root location to connect
 #     to.  Accepts a single value, can be used in conjunction with
-#     nginx-legacy::resource::upstream
+#     nginx_legacy::resource::upstream
 #   [*proxy_read_timeout*]  - Override the default the proxy read timeout value
 #     of 90 seconds
 #   [*proxy_redirect*]      - Override the default proxy_redirect value of off.
@@ -54,10 +54,10 @@
 # Requires:
 #
 # Sample Usage:
-#  nginx-legacy::resource::streamhost { 'test2.local':
+#  nginx_legacy::resource::streamhost { 'test2.local':
 #    ensure   => present,
 #  }
-define nginx-legacy::resource::streamhost (
+define nginx_legacy::resource::streamhost (
   $ensure                       = 'present',
   $listen_ip                    = '*',
   $listen_port                  = '80',
@@ -67,15 +67,15 @@ define nginx-legacy::resource::streamhost (
   $ipv6_listen_port             = '80',
   $ipv6_listen_options          = 'default ipv6only=on',
   $proxy                        = undef,
-  $proxy_read_timeout           = $::nginx-legacy::config::proxy_read_timeout,
-  $proxy_connect_timeout        = $::nginx-legacy::config::proxy_connect_timeout,
+  $proxy_read_timeout           = $::nginx_legacy::config::proxy_read_timeout,
+  $proxy_connect_timeout        = $::nginx_legacy::config::proxy_connect_timeout,
   $resolver                     = [],
   $server_name                  = [$name],
   $raw_prepend                  = undef,
   $raw_append                   = undef,
-  $owner                        = $::nginx-legacy::config::global_owner,
-  $group                        = $::nginx-legacy::config::global_group,
-  $mode                         = $::nginx-legacy::config::global_mode,
+  $owner                        = $::nginx_legacy::config::global_owner,
+  $group                        = $::nginx_legacy::config::global_group,
+  $mode                         = $::nginx_legacy::config::global_mode,
 ) {
 
   validate_re($ensure, '^(present|absent)$',
@@ -109,8 +109,8 @@ define nginx-legacy::resource::streamhost (
     "${mode} is not valid. It should be 4 digits (0644 by default).")
 
   # Variables
-  $streamhost_dir = "${::nginx-legacy::config::conf_dir}/streams-available"
-  $streamhost_enable_dir = "${::nginx-legacy::config::conf_dir}/streams-enabled"
+  $streamhost_dir = "${::nginx_legacy::config::conf_dir}/streams-available"
+  $streamhost_enable_dir = "${::nginx_legacy::config::conf_dir}/streams-enabled"
   $streamhost_symlink_ensure = $ensure ? {
     'absent' => absent,
     default  => 'link',
@@ -124,7 +124,7 @@ define nginx-legacy::resource::streamhost (
       'absent' => absent,
       default  => 'file',
     },
-    notify => Class['::nginx-legacy::service'],
+    notify => Class['::nginx_legacy::service'],
     owner  => $owner,
     group  => $group,
     mode   => $mode,
@@ -140,7 +140,7 @@ define nginx-legacy::resource::streamhost (
     owner  => $owner,
     group  => $group,
     mode   => $mode,
-    notify => Class['::nginx-legacy::service'],
+    notify => Class['::nginx_legacy::service'],
   }
 
   concat::fragment { "${name_sanitized}-header":
@@ -154,7 +154,7 @@ define nginx-legacy::resource::streamhost (
     path    => "${streamhost_enable_dir}/${name_sanitized}.conf",
     target  => $config_file,
     require => Concat[$config_file],
-    notify  => Class['::nginx-legacy::service'],
+    notify  => Class['::nginx_legacy::service'],
   }
 
 }

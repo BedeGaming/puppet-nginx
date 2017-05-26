@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx-legacy::resource::map' do
+describe 'nginx_legacy::resource::map' do
   let :title do
     'backend_pool'
   end
@@ -19,7 +19,7 @@ describe 'nginx-legacy::resource::map' do
 
   let :pre_condition do
     [
-      'include ::nginx-legacy::config',
+      'include ::nginx_legacy::config',
     ]
   end
 

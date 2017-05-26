@@ -1,11 +1,11 @@
 require 'spec_helper_acceptance'
 
-describe "nginx-legacy::resource::upstream define:" do
+describe "nginx_legacy::resource::upstream define:" do
   it 'should run successfully' do
 
     pp = "
     class { 'nginx': }
-    nginx-legacy::resource::upstream { 'puppet_rack_app':
+    nginx_legacy::resource::upstream { 'puppet_rack_app':
       ensure  => present,
       members => [
         'localhost:3000',
@@ -13,7 +13,7 @@ describe "nginx-legacy::resource::upstream define:" do
         'localhost:3002',
       ],
     }
-    nginx-legacy::resource::vhost { 'rack.puppetlabs.com':
+    nginx_legacy::resource::vhost { 'rack.puppetlabs.com':
       ensure => present,
       proxy  => 'http://puppet_rack_app',
     }

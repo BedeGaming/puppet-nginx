@@ -101,10 +101,10 @@ class nginx-legacy (
 
   ### START Package Configuration ###
   $package_ensure                 = present,
-  $package_name                   = $::nginx-legacy::params::package_name,
+  $package_name                   = $::nginx_legacy::params::package_name,
   $package_source                 = 'nginx',
   $package_flavor                 = undef,
-  $manage_repo                    = $::nginx-legacy::params::manage_repo,
+  $manage_repo                    = $::nginx_legacy::params::manage_repo,
   ### END Package Configuration ###
 
   ### START Service Configuation ###
@@ -124,7 +124,7 @@ class nginx-legacy (
   $nginx_vhosts                   = {},
   $nginx_vhosts_defaults          = {},
   ### END Hiera Lookups ###
-) inherits ::nginx-legacy::params {
+) inherits ::nginx_legacy::params {
 
   ### DEPRECATION WARNING ###
   ###
@@ -205,24 +205,24 @@ class nginx-legacy (
         $sites_available_owner or
         $sites_available_group or
         $sites_available_mode {
-          include ::nginx-legacy::notice::config
+          include ::nginx_legacy::notice::config
         }
 
   ### END DEPRECATION WARNING ###
 
-  class { '::nginx-legacy::package':
+  class { '::nginx_legacy::package':
     package_name   => $package_name,
     package_source => $package_source,
     package_ensure => $package_ensure,
     package_flavor => $package_flavor,
-    notify         => Class['::nginx-legacy::service'],
+    notify         => Class['::nginx_legacy::service'],
     manage_repo    => $manage_repo,
   }
 
   ## This `if` statement is here in the event a user cannot use
   ## Hiera based parameter overrides. Will not be here in 1.0 release
-  if !defined(Class['::nginx-legacy::config']) {
-    class { '::nginx-legacy::config':
+  if !defined(Class['::nginx_legacy::config']) {
+    class { '::nginx_legacy::config':
       client_body_buffer_size        => $client_body_buffer_size,
       client_body_temp_path          => $client_body_temp_path,
       client_max_body_size           => $client_max_body_size,
@@ -289,9 +289,9 @@ class nginx-legacy (
       sites_available_mode           => $sites_available_mode,
     }
   }
-  Class['::nginx-legacy::package'] -> Class['::nginx-legacy::config'] ~> Class['::nginx-legacy::service']
+  Class['::nginx_legacy::package'] -> Class['::nginx_legacy::config'] ~> Class['::nginx_legacy::service']
 
-  class { '::nginx-legacy::service':
+  class { '::nginx_legacy::service':
     configtest_enable => $configtest_enable,
     service_ensure    => $service_ensure,
     service_restart   => $service_restart,
@@ -299,21 +299,21 @@ class nginx-legacy (
     service_flags     => $service_flags,
   }
 
-  create_resources('nginx-legacy::resource::upstream', $nginx_upstreams)
-  create_resources('nginx-legacy::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
-  create_resources('nginx-legacy::resource::location', $nginx_locations)
-  create_resources('nginx-legacy::resource::mailhost', $nginx_mailhosts)
-  create_resources('nginx-legacy::resource::map', $string_mappings)
-  create_resources('nginx-legacy::resource::geo', $geo_mappings)
+  create_resources('nginx_legacy::resource::upstream', $nginx_upstreams)
+  create_resources('nginx_legacy::resource::vhost', $nginx_vhosts, $nginx_vhosts_defaults)
+  create_resources('nginx_legacy::resource::location', $nginx_locations)
+  create_resources('nginx_legacy::resource::mailhost', $nginx_mailhosts)
+  create_resources('nginx_legacy::resource::map', $string_mappings)
+  create_resources('nginx_legacy::resource::geo', $geo_mappings)
 
   # Allow the end user to establish relationships to the "main" class
   # and preserve the relationship to the implementation classes through
   # a transitive relationship to the composite class.
-  anchor{ 'nginx-legacy::begin':
-    before => Class['::nginx-legacy::package'],
-    notify => Class['::nginx-legacy::service'],
+  anchor{ 'nginx_legacy::begin':
+    before => Class['::nginx_legacy::package'],
+    notify => Class['::nginx_legacy::service'],
   }
-  anchor { 'nginx-legacy::end':
-    require => Class['::nginx-legacy::service'],
+  anchor { 'nginx_legacy::end':
+    require => Class['::nginx_legacy::service'],
   }
 }

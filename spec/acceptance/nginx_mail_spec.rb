@@ -1,13 +1,13 @@
 require 'spec_helper_acceptance'
 
-describe "nginx-legacy::resource::mailhost define:" do
+describe "nginx_legacy::resource::mailhost define:" do
   it 'should run successfully' do
 
     pp = "
     class { 'nginx':
       mail => true,
     }
-    nginx-legacy::resource::mailhost { 'domain1.example':
+    nginx_legacy::resource::mailhost { 'domain1.example':
       ensure      => present,
       auth_http   => 'localhost/cgi-bin/auth',
       protocol    => 'smtp',

@@ -1,10 +1,10 @@
-# define: nginx-legacy::resource::upstream
+# define: nginx_legacy::resource::upstream
 #
 # This definition creates a new upstream proxy entry for NGINX
 #
 # Parameters:
 #   [*members*]               - Array of member URIs for NGINX to connect to. Must follow valid NGINX syntax.
-#                               If omitted, individual members should be defined with nginx-legacy::resource::upstream::member
+#                               If omitted, individual members should be defined with nginx_legacy::resource::upstream::member
 #   [*ensure*]                - Enables or disables the specified location (present|absent)
 #   [*upstream_cfg_prepend*]  - It expects a hash with custom directives to put before anything else inside upstream
 #   [*upstream_fail_timeout*] - Set the fail_timeout for the upstream. Default is 10 seconds - As that is what Nginx does normally.
@@ -15,7 +15,7 @@
 # Requires:
 #
 # Sample Usage:
-#  nginx-legacy::resource::upstream { 'proxypass':
+#  nginx_legacy::resource::upstream { 'proxypass':
 #    ensure  => present,
 #    members => [
 #      'localhost:3000',
@@ -30,7 +30,7 @@
 #    'ip_hash'   => '',
 #    'keepalive' => '20',
 #  }
-#  nginx-legacy::resource::upstream { 'proxypass':
+#  nginx_legacy::resource::upstream { 'proxypass':
 #    ensure              => present,
 #    members => [
 #      'localhost:3000',
@@ -39,7 +39,7 @@
 #    ],
 #    upstream_cfg_prepend => $my_config,
 #  }
-define nginx-legacy::resource::upstream (
+define nginx_legacy::resource::upstream (
   $members = undef,
   $ensure = 'present',
   $upstream_cfg_prepend = undef,
@@ -59,7 +59,7 @@ define nginx-legacy::resource::upstream (
     validate_hash($upstream_cfg_prepend)
   }
 
-  $root_group = $::nginx-legacy::config::root_group
+  $root_group = $::nginx_legacy::config::root_group
 
   $ensure_real = $ensure ? {
     'absent' => absent,
@@ -77,14 +77,14 @@ define nginx-legacy::resource::upstream (
     mode  => '0644',
   }
 
-  concat { "${::nginx-legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf":
+  concat { "${::nginx_legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf":
     ensure => $ensure_real,
-    notify => Class['::nginx-legacy::service'],
+    notify => Class['::nginx_legacy::service'],
   }
 
   # Uses: $name, $upstream_cfg_prepend
   concat::fragment { "${name}_upstream_header":
-    target  => "${::nginx-legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+    target  => "${::nginx_legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '10',
     content => template('nginx/conf.d/upstream_header.erb'),
   }
@@ -92,7 +92,7 @@ define nginx-legacy::resource::upstream (
   if $members != undef {
     # Uses: $members, $upstream_fail_timeout
     concat::fragment { "${name}_upstream_members":
-      target  => "${::nginx-legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+      target  => "${::nginx_legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
       order   => '50',
       content => template('nginx/conf.d/upstream_members.erb'),
     }
@@ -102,7 +102,7 @@ define nginx-legacy::resource::upstream (
   }
 
   concat::fragment { "${name}_upstream_footer":
-    target  => "${::nginx-legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
+    target  => "${::nginx_legacy::config::conf_dir}/${conf_dir_real}/${name}-upstream.conf",
     order   => '90',
     content => "}\n",
   }

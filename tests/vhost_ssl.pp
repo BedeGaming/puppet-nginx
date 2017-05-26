@@ -1,6 +1,6 @@
 include nginx
 
-nginx-legacy::resource::vhost { 'test3.local test3':
+nginx_legacy::resource::vhost { 'test3.local test3':
   ensure          => present,
   www_root        => '/var/www/nginx-default',
   ssl             => true,
@@ -9,7 +9,7 @@ nginx-legacy::resource::vhost { 'test3.local test3':
   ssl_key         => 'puppet:///modules/sslkey/whildcard_mydomain.key'
 }
 
-nginx-legacy::resource::vhost { 'test2.local test2':
+nginx_legacy::resource::vhost { 'test2.local test2':
   ensure   => present,
   www_root => '/var/www/nginx-default',
   ssl      => true,
@@ -17,14 +17,14 @@ nginx-legacy::resource::vhost { 'test2.local test2':
   ssl_key  => 'puppet:///modules/sslkey/whildcard_mydomain.key'
 }
 
-nginx-legacy::resource::location { 'test2.local-bob':
+nginx_legacy::resource::location { 'test2.local-bob':
   ensure   => present,
   www_root => '/var/www/bob',
   location => '/bob',
   vhost    => 'test2.local test2',
 }
 
-nginx-legacy::resource::location { 'test3.local-bob':
+nginx_legacy::resource::location { 'test3.local-bob':
   ensure   => present,
   www_root => '/var/www/bob',
   location => '/bob',

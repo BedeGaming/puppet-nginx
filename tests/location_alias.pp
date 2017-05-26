@@ -1,6 +1,6 @@
 include nginx
 
-nginx-legacy::resource::location { 'www.test.com-alias':
+nginx_legacy::resource::location { 'www.test.com-alias':
     ensure         => present,
     location       => '/some/url',
     location_alias => '/new/url/',

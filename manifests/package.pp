@@ -1,4 +1,4 @@
-# Class: nginx-legacy::package
+# Class: nginx_legacy::package
 #
 # This module manages NGINX package installation
 #
@@ -13,36 +13,36 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx-legacy::package(
-  $package_name   = $::nginx-legacy::params::package_name,
+class nginx_legacy::package(
+  $package_name   = $::nginx_legacy::params::package_name,
   $package_source = 'nginx',
   $package_ensure = 'present',
   $package_flavor = undef,
-  $manage_repo    = $::nginx-legacy::params::manage_repo,
-) inherits ::nginx-legacy::params {
+  $manage_repo    = $::nginx_legacy::params::manage_repo,
+) inherits ::nginx_legacy::params {
 
-  anchor { 'nginx-legacy::package::begin': }
-  anchor { 'nginx-legacy::package::end': }
+  anchor { 'nginx_legacy::package::begin': }
+  anchor { 'nginx_legacy::package::end': }
 
   case $::osfamily {
     'redhat': {
-      class { '::nginx-legacy::package::redhat':
+      class { '::nginx_legacy::package::redhat':
         manage_repo    => $manage_repo,
         package_source => $package_source,
         package_ensure => $package_ensure,
         package_name   => $package_name,
-        require        => Anchor['nginx-legacy::package::begin'],
-        before         => Anchor['nginx-legacy::package::end'],
+        require        => Anchor['nginx_legacy::package::begin'],
+        before         => Anchor['nginx_legacy::package::end'],
       }
     }
     'debian': {
-      class { '::nginx-legacy::package::debian':
+      class { '::nginx_legacy::package::debian':
         package_name   => $package_name,
         package_source => $package_source,
         package_ensure => $package_ensure,
         manage_repo    => $manage_repo,
-        require        => Anchor['nginx-legacy::package::begin'],
-        before         => Anchor['nginx-legacy::package::end'],
+        require        => Anchor['nginx_legacy::package::begin'],
+        before         => Anchor['nginx_legacy::package::end'],
       }
     }
     'Solaris': {

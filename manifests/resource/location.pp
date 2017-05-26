@@ -1,4 +1,4 @@
-# define: nginx-legacy::resource::location
+# define: nginx_legacy::resource::location
 #
 # This definition creates a new location entry within a virtual host
 #
@@ -21,7 +21,7 @@
 #     traversing a directory
 #   [*proxy*]                - Proxy server(s) for a location to connect to.
 #     Accepts a single value, can be used in conjunction with
-#     nginx-legacy::resource::upstream
+#     nginx_legacy::resource::upstream
 #   [*proxy_redirect*]       - sets the text, which must be changed in
 #     response-header "Location" and "Refresh" in the response of the proxied
 #     server.
@@ -97,7 +97,7 @@
 # Requires:
 #
 # Sample Usage:
-#  nginx-legacy::resource::location { 'test2.local-bob':
+#  nginx_legacy::resource::location { 'test2.local-bob':
 #    ensure   => present,
 #    www_root => '/var/www/bob',
 #    location => '/bob',
@@ -111,7 +111,7 @@
 #    'allow'      => '127.0.0.1',
 #    'deny'       => 'all'
 #  }
-#  nginx-legacy::resource::location { 'test2.local-bob':
+#  nginx_legacy::resource::location { 'test2.local-bob':
 #    ensure              => present,
 #    www_root            => '/var/www/bob',
 #    location            => '/bob',
@@ -120,7 +120,7 @@
 #  }
 #
 #  Add Custom fastcgi_params
-#  nginx-legacy::resource::location { 'test2.local-bob':
+#  nginx_legacy::resource::location { 'test2.local-bob':
 #    ensure   => present,
 #    www_root => '/var/www/bob',
 #    location => '/bob',
@@ -130,7 +130,7 @@
 #    }
 #  }
 
-define nginx-legacy::resource::location (
+define nginx_legacy::resource::location (
   $ensure               = present,
   $internal             = false,
   $location             = $name,
@@ -142,17 +142,17 @@ define nginx-legacy::resource::location (
     'index.htm',
     'index.php'],
   $proxy                = undef,
-  $proxy_redirect       = $::nginx-legacy::config::proxy_redirect,
-  $proxy_read_timeout   = $::nginx-legacy::config::proxy_read_timeout,
-  $proxy_connect_timeout = $::nginx-legacy::config::proxy_connect_timeout,
-  $proxy_set_header     = $::nginx-legacy::config::proxy_set_header,
+  $proxy_redirect       = $::nginx_legacy::config::proxy_redirect,
+  $proxy_read_timeout   = $::nginx_legacy::config::proxy_read_timeout,
+  $proxy_connect_timeout = $::nginx_legacy::config::proxy_connect_timeout,
+  $proxy_set_header     = $::nginx_legacy::config::proxy_set_header,
   $fastcgi              = undef,
   $fastcgi_param        = undef,
-  $fastcgi_params       = "${::nginx-legacy::config::conf_dir}/fastcgi_params",
+  $fastcgi_params       = "${::nginx_legacy::config::conf_dir}/fastcgi_params",
   $fastcgi_script       = undef,
   $fastcgi_split_path   = undef,
   $uwsgi                = undef,
-  $uwsgi_params         = "${nginx-legacy::config::conf_dir}/uwsgi_params",
+  $uwsgi_params         = "${nginx_legacy::config::conf_dir}/uwsgi_params",
   $ssl                  = false,
   $ssl_only             = false,
   $location_alias       = undef,
@@ -183,13 +183,13 @@ define nginx-legacy::resource::location (
   $flv             = false,
 ) {
 
-  $root_group = $::nginx-legacy::config::root_group
+  $root_group = $::nginx_legacy::config::root_group
 
   File {
     owner  => 'root',
     group  => $root_group,
     mode   => '0644',
-    notify => Class['::nginx-legacy::service'],
+    notify => Class['::nginx_legacy::service'],
   }
 
   validate_re($ensure, '^(present|absent)$',
@@ -336,7 +336,7 @@ define nginx-legacy::resource::location (
   }
 
   $vhost_sanitized = regsubst($vhost, ' ', '_', 'G')
-  $config_file = "${::nginx-legacy::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
+  $config_file = "${::nginx_legacy::config::conf_dir}/sites-available/${vhost_sanitized}.conf"
 
   $location_sanitized_tmp = regsubst($location, '\/', '_', 'G')
   $location_sanitized = regsubst($location_sanitized_tmp, '\\\\', '_', 'G')

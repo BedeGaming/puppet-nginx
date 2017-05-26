@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe "nginx-legacy::resource::vhost define:" do
+describe "nginx_legacy::resource::vhost define:" do
   context 'new vhost on port 80' do
     it 'should configure a nginx vhost' do
 
       pp = "
       class { 'nginx': }
-      nginx-legacy::resource::vhost { 'www.puppetlabs.com':
+      nginx_legacy::resource::vhost { 'www.puppetlabs.com':
         ensure   => present,
         www_root => '/var/www/www.puppetlabs.com',
       }
@@ -48,7 +48,7 @@ describe "nginx-legacy::resource::vhost define:" do
 
       pp = "
       class { 'nginx': }
-      nginx-legacy::resource::vhost { 'www.puppetlabs.com':
+      nginx_legacy::resource::vhost { 'www.puppetlabs.com':
         ensure   => present,
         ssl      => true,
         ssl_cert => '/tmp/blah.cert',

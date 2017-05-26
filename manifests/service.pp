@@ -1,4 +1,4 @@
-# Class: nginx-legacy::service
+# Class: nginx_legacy::service
 #
 # This module manages NGINX service management and vhost rebuild
 #
@@ -13,10 +13,10 @@
 # Sample Usage:
 #
 # This class file is not called directly
-class nginx-legacy::service(
-  $configtest_enable = $::nginx-legacy::configtest_enable,
-  $service_restart   = $::nginx-legacy::service_restart,
-  $service_ensure    = $::nginx-legacy::service_ensure,
+class nginx_legacy::service(
+  $configtest_enable = $::nginx_legacy::configtest_enable,
+  $service_restart   = $::nginx_legacy::service_restart,
+  $service_ensure    = $::nginx_legacy::service_ensure,
   $service_name      = 'nginx',
   $service_flags     = undef,
 ) {

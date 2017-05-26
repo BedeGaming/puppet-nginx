@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'nginx-legacy::resource::mailhost' do
+describe 'nginx_legacy::resource::mailhost' do
   let :title do
     'www.rspec.example.com'
   end
@@ -17,7 +17,7 @@ describe 'nginx-legacy::resource::mailhost' do
   end
   let :pre_condition do
     [
-      'include ::nginx-legacy::config',
+      'include ::nginx_legacy::config',
     ]
   end
 
@@ -25,7 +25,7 @@ describe 'nginx-legacy::resource::mailhost' do
 
     describe 'basic assumptions' do
       let :params do default_params end
-      it { is_expected.to contain_class("nginx-legacy::config") }
+      it { is_expected.to contain_class("nginx_legacy::config") }
       it { is_expected.to contain_concat("/etc/nginx/conf.mail.d/#{title}.conf").with({
         'owner' => 'root',
         'group' => 'root',
@@ -308,7 +308,7 @@ describe 'nginx-legacy::resource::mailhost' do
           :ssl_key => 'key',
         }) end
 
-        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx_legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL key missing and ssl => true" do
@@ -317,7 +317,7 @@ describe 'nginx-legacy::resource::mailhost' do
           :ssl_cert => 'cert',
         }) end
 
-        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx_legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL cert missing and starttls => 'on'" do
@@ -326,7 +326,7 @@ describe 'nginx-legacy::resource::mailhost' do
           :ssl_key  => 'key',
         }) end
 
-        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx_legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL key missing and starttls => 'on'" do
@@ -335,7 +335,7 @@ describe 'nginx-legacy::resource::mailhost' do
           :ssl_cert => 'cert',
         }) end
 
-        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx_legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL cert missing and starttls => 'only'" do
@@ -344,7 +344,7 @@ describe 'nginx-legacy::resource::mailhost' do
           :ssl_key  => 'key',
         }) end
 
-        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx_legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context "SSL key missing and starttls => 'only'" do
@@ -353,7 +353,7 @@ describe 'nginx-legacy::resource::mailhost' do
           :ssl_cert => 'cert',
         }) end
 
-        it { expect { is_expected.to contain_class('nginx-legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
+        it { expect { is_expected.to contain_class('nginx_legacy::resource::vhost') }.to raise_error(Puppet::Error, %r{nginx: SSL certificate/key \(ssl_cert/ssl_cert\) and/or SSL Private must be defined and exist on the target system\(s\)}) }
       end
 
       context 'when listen_port != ssl_port' do

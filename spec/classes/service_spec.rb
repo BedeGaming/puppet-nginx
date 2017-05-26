@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'nginx-legacy::service' do
+describe 'nginx_legacy::service' do
 
   let :params do {
       :configtest_enable => false,

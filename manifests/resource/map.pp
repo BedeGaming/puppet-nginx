@@ -1,4 +1,4 @@
-# define: nginx-legacy::resource::map
+# define: nginx_legacy::resource::map
 #
 # This definition creates a new mapping entry for NGINX
 #
@@ -17,7 +17,7 @@
 #
 # Sample Usage:
 #
-#  nginx-legacy::resource::map { 'backend_pool':
+#  nginx_legacy::resource::map { 'backend_pool':
 #    ensure    => present,
 #    hostnames => true,
 #    default   => 'ny-pool-1,
@@ -30,7 +30,7 @@
 #
 # Sample Hiera usage:
 #
-#  nginx-legacy::string_mappings:
+#  nginx_legacy::string_mappings:
 #    client_network:
 #      ensure: present
 #      hostnames: true
@@ -41,7 +41,7 @@
 #        '*.sf.example.com': 'sf-pool-1'
 
 
-define nginx-legacy::resource::map (
+define nginx_legacy::resource::map (
   $string,
   $mappings,
   $default    = undef,
@@ -57,7 +57,7 @@ define nginx-legacy::resource::map (
     "Invalid ensure value '${ensure}'. Expected 'present' or 'absent'")
   if ($default != undef) { validate_string($default) }
 
-  $root_group = $::nginx-legacy::config::root_group
+  $root_group = $::nginx_legacy::config::root_group
 
   $ensure_real = $ensure ? {
     'absent' => absent,
@@ -70,9 +70,9 @@ define nginx-legacy::resource::map (
     mode  => '0644',
   }
 
-  file { "${::nginx-legacy::config::conf_dir}/conf.d/${name}-map.conf":
+  file { "${::nginx_legacy::config::conf_dir}/conf.d/${name}-map.conf":
     ensure  => $ensure_real,
     content => template('nginx/conf.d/map.erb'),
-    notify  => Class['::nginx-legacy::service'],
+    notify  => Class['::nginx_legacy::service'],
   }
 }
