@@ -25,7 +25,7 @@
 # node default {
 #   include nginx
 # }
-class nginx (
+class nginx-legacy (
   ### START Nginx Configuration ###
   $client_body_buffer_size        = undef,
   $client_body_temp_path          = undef,
@@ -289,7 +289,7 @@ class nginx (
       sites_available_mode           => $sites_available_mode,
     }
   }
-  Class['::nginx-legacy::package'] -> Class['::nginx::config'] ~> Class['::nginx::service']
+  Class['::nginx-legacy::package'] -> Class['::nginx-legacy::config'] ~> Class['::nginx-legacy::service']
 
   class { '::nginx-legacy::service':
     configtest_enable => $configtest_enable,
