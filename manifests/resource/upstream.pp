@@ -67,7 +67,7 @@ define nginx::resource::upstream (
     ensure  => $ensure ? {
       'absent' => absent,
       'file'   => present,
-      default  => present,
+      default  => undef,
     },
     notify  => Class['nginx::service'],
   }

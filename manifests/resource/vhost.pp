@@ -544,7 +544,6 @@ define nginx::resource::vhost (
 
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name_sanitized}-header":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/vhost/vhost_header.erb'),
       order   => '001',
@@ -554,7 +553,6 @@ define nginx::resource::vhost (
   # Create a proper file close stub.
   if ($listen_port != $ssl_port) {
     concat::fragment { "${name_sanitized}-footer":
-      ensure  => present,
       target  => $config_file,
       content => template('nginx/vhost/vhost_footer.erb'),
       order   => '699',
