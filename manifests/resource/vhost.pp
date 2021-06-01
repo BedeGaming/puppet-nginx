@@ -460,7 +460,7 @@ define nginx::resource::vhost (
 
   $access_log_real = $format_log ? {
     undef   => $access_log_tmp,
-    default => "${access_log_tmp} ${format_log}",
+    default => "${access_log_tmp} ${format_log}; access_log ${nginx::config::logdir}/${name_sanitized}_ecs_access.log",
   }
 
   $error_log_real = $error_log ? {
@@ -575,7 +575,7 @@ define nginx::resource::vhost (
 
     $ssl_access_log_real = $format_log ? {
       undef   => $ssl_access_log_tmp,
-      default => "${ssl_access_log_tmp} ${format_log}",
+      default => "${ssl_access_log_tmp} ${format_log}; access_log ${nginx::config::logdir}/ssl-${name_sanitized}_ecs_access.log",
     }
 
     $ssl_error_log_real = $error_log ? {
