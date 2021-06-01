@@ -454,8 +454,8 @@ define nginx::resource::vhost (
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
   $access_log_tmp = $access_log ? {
-    undef   => "${nginx::config::logdir}/${name_sanitized}.access.log; access_log ${nginx::config::logdir}/${name_sanitized}_ecs_access.log",
-    default => "${access_log}; access_log ${nginx::config::logdir}/${name_sanitized}_ecs_access.log",
+    undef   => "${nginx::config::logdir}/${name_sanitized}.access.log; access_log ${nginx::config::logdir}/${name_sanitized}_ecs.access.log",
+    default => "${access_log}; access_log ${nginx::config::logdir}/${name_sanitized}_ecs.access.log",
   }
 
   $access_log_real = $format_log ? {
@@ -569,8 +569,8 @@ define nginx::resource::vhost (
     # Also opted to add more logic here and keep template cleaner which
     # unfortunately means resorting to the $varname_real thing
     $ssl_access_log_tmp = $access_log ? {
-      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.access.log",
-      default => $access_log,
+      undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.access.log; access_log ${nginx::config::logdir}/ssl-${name_sanitized}_ecs.access.log",
+      default => "$access_log; access_log ${nginx::config::logdir}/ssl-${name_sanitized}_ecs.access.log",
     }
 
     $ssl_access_log_real = $format_log ? {
