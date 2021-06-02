@@ -1,0 +1,8 @@
+#!/bin/bash
+
+A='/mnt/data/log/nginx/bosadmin.bedegaming.com_proxy_public_access.log main;'
+echo $A | awk '{print $1}'
+
+
+echo $A | cut -d ' ' -f 2-
+
