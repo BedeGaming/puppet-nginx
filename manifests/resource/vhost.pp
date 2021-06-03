@@ -462,11 +462,11 @@ if $::bede_client == "bde" {
 }
   $access_log_tmp = $access_log ? {
     undef   => "${nginx::config::logdir}/${name_sanitized}.access.log",
-    default => "${access_log}${log_type}${default_format}",
+    default => "${access_log}${log_type} ${default_format}",
   }
   $access_log_real = $format_log ? {
     undef   => $access_log_tmp,
-    default => "${access_log_tmp} ${format_log}${log_type}${default_format}",
+    default => "${access_log_tmp} ${format_log}${log_type} ${default_format}",
   }
 
   $error_log_real = $error_log ? {
@@ -576,11 +576,11 @@ if $::bede_client == "bde" {
     # unfortunately means resorting to the $varname_real thing
     $ssl_access_log_tmp = $access_log ? {
       undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.access.log",
-      default => "$access_log${log_type}${default_format}",
+      default => "$access_log${log_type} ${default_format}",
     }
     $ssl_access_log_real = $format_log ? {
       undef   => $ssl_access_log_tmp,
-      default => "${ssl_access_log_tmp} ${format_log}${log_type}${default_format}",
+      default => "${ssl_access_log_tmp} ${format_log}${log_type} ${default_format}",
     }
 
     $ssl_error_log_real = $error_log ? {
