@@ -453,14 +453,22 @@ define nginx::resource::vhost (
   # This was a lot to add up in parameter list so add it down here
   # Also opted to add more logic here and keep template cleaner which
   # unfortunately means resorting to the $varname_real thing
+
+# enable second log file with no log format only for bde envs.
+if $::bede_client == "bde" {
+  $ecsmain = regsubst($access_log, 'access.log main', 'access_ecs.log ecsmain')
+  $log_type = "; access_log "
+} else {
+  $ecsmain = undef
+  $log_type = undef
+}
   $access_log_tmp = $access_log ? {
     undef   => "${nginx::config::logdir}/${name_sanitized}.access.log",
-    default => $access_log,
+    default => "${access_log}${log_type}${ecsmain}",
   }
-
   $access_log_real = $format_log ? {
     undef   => $access_log_tmp,
-    default => "${access_log_tmp} ${format_log}",
+    default => "${access_log_tmp} ${format_log}${log_type}${ecsmain}",
   }
 
   $error_log_real = $error_log ? {
@@ -570,12 +578,11 @@ define nginx::resource::vhost (
     # unfortunately means resorting to the $varname_real thing
     $ssl_access_log_tmp = $access_log ? {
       undef   => "${nginx::config::logdir}/ssl-${name_sanitized}.access.log",
-      default => $access_log,
+      default => "$access_log${log_type}${ecsmain}",
     }
-
     $ssl_access_log_real = $format_log ? {
       undef   => $ssl_access_log_tmp,
-      default => "${ssl_access_log_tmp} ${format_log}",
+      default => "${ssl_access_log_tmp} ${format_log}${log_type}${ecsmain}",
     }
 
     $ssl_error_log_real = $error_log ? {
