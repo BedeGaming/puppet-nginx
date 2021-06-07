@@ -128,7 +128,7 @@
 #     <lua-script-str> at the log request processing phase.
 #     This does not replace the current access logs, but runs after.
 #   [*log_by_lua_file*]         - Equivalent to log_by_lua, except that the file
-#     specified by <path-to-lua-script-file> contains the Lua code, or, as from
+#     specified by <path-to-lua-script-file> contains the Lua code, or as from
 #     the v0.5.0rc32 release, the Lua/LuaJIT bytecode to be executed.
 #   [*gzip_types*]              - Defines gzip_types, nginx default is text/html
 #   [*owner*]                   - Defines owner of the .conf file
