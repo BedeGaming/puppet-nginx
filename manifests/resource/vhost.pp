@@ -456,7 +456,7 @@ define nginx::resource::vhost (
 
 # enable second log file with no log format only for bde envs.
 if $::bede_client == "bde" {
-  $default_format = regsubst($access_log, 'access.log main', 'ecs_access.log')
+  $default_format = regsubst($access_log, 'access.log main', 'ecs_access.log ecsmain')
   $log_type = "; access_log "
 } else {
   $default_format = undef
